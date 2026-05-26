@@ -2,7 +2,9 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Média</title>
+
   <style>
     * {
       margin: 0;
@@ -14,10 +16,13 @@
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #1e3c72, #2a5298);
       min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 20px;
     }
 
     .container {
@@ -35,6 +40,7 @@
         opacity: 0;
         transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -45,7 +51,7 @@
       text-align: center;
       margin-bottom: 20px;
       color: #1e3c72;
-      font-size: 28px;
+      font-size: 32px;
     }
 
     label {
@@ -56,7 +62,8 @@
       color: #333;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 14px;
       border-radius: 12px;
@@ -65,7 +72,8 @@
       transition: 0.3s;
     }
 
-    input:focus, select:focus {
+    input:focus,
+    select:focus {
       border-color: #2a5298;
       outline: none;
       box-shadow: 0 0 8px rgba(42,82,152,0.3);
@@ -74,7 +82,7 @@
     button {
       width: 100%;
       padding: 16px;
-      margin-top: 20px;
+      margin-top: 25px;
       border: none;
       border-radius: 14px;
       background: #2a5298;
@@ -101,6 +109,13 @@
       animation: aparecer 0.4s ease;
     }
 
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+    }
+
     @media (max-width: 500px) {
       .container {
         padding: 20px;
@@ -108,20 +123,23 @@
       }
 
       h2 {
-        font-size: 24px;
+        font-size: 26px;
       }
     }
   </style>
 </head>
+
 <body>
+
   <div class="container">
+
     <h2>Calculadora de Média</h2>
 
     <label>Nota da Prova:</label>
-    <input type="number" id="prova" step="0.1">
+    <input type="number" id="prova" step="0.1" min="0" max="10">
 
     <label>Nota do Questionário:</label>
-    <input type="number" id="questionario" step="0.1">
+    <input type="number" id="questionario" step="0.1" min="0" max="10">
 
     <label>Curso:</label>
     <select id="curso">
@@ -131,7 +149,7 @@
 
     <div id="campoPIM" style="display:none;">
       <label>Nota do PIM:</label>
-      <input type="number" id="pim" step="0.1">
+      <input type="number" id="pim" step="0.1" min="0" max="10">
     </div>
 
     <label>Currículo:</label>
@@ -146,56 +164,22 @@
       <option value="2">2º Bimestre</option>
     </select>
 
-    <button onclick="calcular()">Calcular</button>
+    <button onclick="calcular()">
+      Calcular
+    </button>
 
-    <div id="resultado" class="resultado"></div>
+    <div id="resultado" class="resultado" style="display:none;"></div>
+
   </div>
 
+  <footer>
+    Created by R F NASCIMENTO
+  </footer>
+
   <script>
-    function calcular() {
-      const prova = parseFloat(document.getElementById('prova').value);
-      const questionario = parseFloat(document.getElementById('questionario').value);
-      const curriculo = document.getElementById('curriculo').value;
-      const bimestre = document.getElementById('bimestre').value;
-      const curso = document.getElementById('curso').value;
-      const resultadoDiv = document.getElementById('resultado');
-      const pim = parseFloat(document.getElementById('pim').value) || 0;
 
-      if (isNaN(prova) || isNaN(questionario)) {
-        resultadoDiv.innerHTML = 'Preencha todas as notas!';
-        resultadoDiv.style.background = 'gray';
-        return;
-      }
+    document.getElementById('curso').addEventListener('change', function () {
 
-      let media;
-
-      if (curso === 'gestao') {
-        media = ((7 * prova) + (2 * pim) + questionario) / 10;
-      } else {
-        media = ((9 * prova) + questionario) / 10;
-      }
-
-      let status = '';
-      let cor = '';
-      let mediaMinima = curriculo === '2022' ? 5.8 : 6.8;
-
-      if (media >= mediaMinima) {
-        status = 'APROVADO';
-        cor = 'green';
-      } else {
-        if (bimestre === '1') {
-          status = 'RECUPERAÇÃO';
-          cor = 'yellow';
-        } else {
-          status = 'REPROVADO';
-          cor = 'red';
-        }
-      }
-
-      resultadoDiv.innerHTML = `Média: ${media.toFixed(2)} - ${status}`;
-      resultadoDiv.style.background = cor;
-    }
-  document.getElementById('curso').addEventListener('change', function() {
       const campoPIM = document.getElementById('campoPIM');
 
       if (this.value === 'gestao') {
@@ -203,10 +187,92 @@
       } else {
         campoPIM.style.display = 'none';
       }
+
     });
+
+    function calcular() {
+
+      const prova = parseFloat(document.getElementById('prova').value);
+      const questionario = parseFloat(document.getElementById('questionario').value);
+      const curriculo = document.getElementById('curriculo').value;
+      const bimestre = document.getElementById('bimestre').value;
+      const curso = document.getElementById('curso').value;
+      const resultadoDiv = document.getElementById('resultado');
+
+      let pim = 0;
+
+      if (curso === 'gestao') {
+        pim = parseFloat(document.getElementById('pim').value);
+
+        if (isNaN(pim)) {
+          alert('Preencha a nota do PIM');
+          return;
+        }
+      }
+
+      if (isNaN(prova) || isNaN(questionario)) {
+        alert('Preencha todas as notas');
+        return;
+      }
+
+      let media = 0;
+
+      // Fórmula Gestão
+      if (curso === 'gestao') {
+
+        media = ((7 * prova) + (2 * pim) + questionario) / 10;
+
+      } else {
+
+        // Fórmula Normal
+        media = ((9 * prova) + questionario) / 10;
+
+      }
+
+      let mediaMinima = 0;
+
+      if (curriculo === '2022') {
+        mediaMinima = 5.8;
+      } else {
+        mediaMinima = 6.8;
+      }
+
+      let status = '';
+      let cor = '';
+
+      if (media >= mediaMinima) {
+
+        status = '✅ APROVADO';
+        cor = '#28a745';
+
+      } else {
+
+        if (bimestre === '1') {
+
+          status = '🟡 RECUPERAÇÃO';
+          cor = '#ffc107';
+
+        } else {
+
+          status = '❌ REPROVADO';
+          cor = '#dc3545';
+
+        }
+
+      }
+
+      resultadoDiv.style.display = 'block';
+
+      resultadoDiv.style.background = cor;
+
+      resultadoDiv.innerHTML = `
+        Média Final: ${media.toFixed(2)} <br><br>
+        ${status}
+      `;
+
+    }
+
   </script>
-  <footer style="text-align:center; margin-top:20px; color:white; font-size:14px;">
-    Created by R F NASCIMENTO
-  </footer>
+
 </body>
 </html>
