@@ -2,34 +2,114 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Média</title>
   <style>
-    body body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
     .container {
       background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       width: 100%;
-max-width: 400px;
-margin: auto;
+      max-width: 420px;
+      padding: 25px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: aparecer 0.5s ease;
     }
-    input, select, button {
-  width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  font-size: 16px;
-}
-    .resultado {
-      margin-top: 15px;
-      font-weight: bold;
-      padding: 10px;
-      border-radius: 5px;
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
       text-align: center;
+      margin-bottom: 20px;
+      color: #1e3c72;
+      font-size: 28px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #2a5298;
+      outline: none;
+      box-shadow: 0 0 8px rgba(42,82,152,0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 14px;
+      background: #2a5298;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #1e3c72;
+      transform: scale(1.02);
+    }
+
+    .resultado {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      animation: aparecer 0.4s ease;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
@@ -42,6 +122,17 @@ margin: auto;
 
     <label>Nota do Questionário:</label>
     <input type="number" id="questionario" step="0.1">
+
+    <label>Curso:</label>
+    <select id="curso">
+      <option value="normal">Cursos Normais</option>
+      <option value="gestao">Gestão</option>
+    </select>
+
+    <div id="campoPIM" style="display:none;">
+      <label>Nota do PIM:</label>
+      <input type="number" id="pim" step="0.1">
+    </div>
 
     <label>Currículo:</label>
     <select id="curriculo">
@@ -66,7 +157,9 @@ margin: auto;
       const questionario = parseFloat(document.getElementById('questionario').value);
       const curriculo = document.getElementById('curriculo').value;
       const bimestre = document.getElementById('bimestre').value;
+      const curso = document.getElementById('curso').value;
       const resultadoDiv = document.getElementById('resultado');
+      const pim = parseFloat(document.getElementById('pim').value) || 0;
 
       if (isNaN(prova) || isNaN(questionario)) {
         resultadoDiv.innerHTML = 'Preencha todas as notas!';
@@ -74,7 +167,13 @@ margin: auto;
         return;
       }
 
-      const media = ((9 * prova) + questionario) / 10;
+      let media;
+
+      if (curso === 'gestao') {
+        media = ((7 * prova) + (2 * pim) + questionario) / 10;
+      } else {
+        media = ((9 * prova) + questionario) / 10;
+      }
 
       let status = '';
       let cor = '';
@@ -96,9 +195,15 @@ margin: auto;
       resultadoDiv.innerHTML = `Média: ${media.toFixed(2)} - ${status}`;
       resultadoDiv.style.background = cor;
     }
+  document.getElementById('curso').addEventListener('change', function() {
+      const campoPIM = document.getElementById('campoPIM');
+
+      if (this.value === 'gestao') {
+        campoPIM.style.display = 'block';
+      } else {
+        campoPIM.style.display = 'none';
+      }
+    });
   </script>
-</body> {
-  margin: 0;
-  padding: 10px;
-}
+</body>
 </html>
