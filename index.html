@@ -1,336 +1,66 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Média</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container {
-      background: white;
-      width: 100%;
-      max-width: 420px;
-      padding: 25px;
-      border-radius: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      animation: aparecer 0.5s ease;
-    }
-
-    @keyframes aparecer {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #1e3c72;
-      font-size: 32px;
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #2a5298;
-      outline: none;
-      box-shadow: 0 0 8px rgba(42,82,152,0.3);
-    }
-
-    button {
-      width: 100%;
-      padding: 16px;
-      margin-top: 25px;
-      border: none;
-      border-radius: 14px;
-      background: #2a5298;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #1e3c72;
-      transform: scale(1.02);
-    }
-
-    .resultado {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 14px;
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      animation: aparecer 0.4s ease;
-    }
-
-    footer {
-      margin-top: 20px;
-      text-align: center;
-      color: white;
-      font-size: 14px;
-    }
-
-    @media (max-width: 500px) {
-      .container {
-        padding: 20px;
-        border-radius: 20px;
-      }
-
-      h2 {
-        font-size: 26px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora de Média</title>
+<style>
+body{font-family:Arial,sans-serif;background:#1e3c72;color:#222;margin:0;padding:20px}
+.card{max-width:480px;margin:auto;background:#fff;padding:20px;border-radius:16px}
+label{display:block;margin-top:10px}
+input,select,button{width:100%;padding:10px;margin-top:5px}
+button{background:#1e88e5;color:#fff;border:none;border-radius:8px}
+#resultado{margin-top:15px;padding:12px;border-radius:8px;color:#fff;display:none}
+footer{text-align:center;color:#fff;margin-top:20px}
+</style>
 </head>
-
 <body>
-
-  <div class="container">
-
-    <h2>Calculadora de Média</h2>
-
-    <label>Nota da Prova:</label>
-    <input type="number" id="prova" step="0.1" min="0" max="10">
-
-    <label>Nota do Questionário:</label>
-    <input type="number" id="questionario" step="0.1" min="0" max="10">
-
-    <label>Curso:</label>
-    <select id="curso">
-      <option value="normal">Cursos Normais</option>
-      <option value="gestao">Gestão</option>
-    </select>
-
-    <div id="campoPIM" style="display:none;">
-      <label>Nota do PIM:</label>
-      <input type="number" id="pim" step="0.1" min="0" max="10">
-    </div>
-
-    <label>Currículo:</label>
-    <select id="curriculo">
-      <option value="2022">Até 2022</option>
-      <option value="2023">2023 ou superior</option>
-    </select>
-
-    <label>Bimestre:</label>
-    <select id="bimestre">
-      <option value="1">1º Bimestre</option>
-      <option value="2">2º Bimestre</option>
-    </select>
-
-    <button onclick="calcular()">
-      Calcular
-    </button>
-<div id="campoExame" style="display:none; margin-top:20px;">
-
-    <label>Nota do Exame (Recuperação):</label>
-
-    <input
-        type="number"
-        id="exame"
-        min="0"
-        max="10"
-        step="0.1">
-
-    <button onclick="calcularExame()" style="margin-top:15px;background:#ff9800;">
-        Calcular Exame
-    </button>
-
+<div class="card">
+<h2>Calculadora de Média</h2>
+<label>Curso</label>
+<select id="curso" onchange="pimBox.style.display=this.value==='gestao'?'block':'none'">
+<option value="normal">Normal</option>
+<option value="gestao">Gestão</option>
+</select>
+<div id="pimBox" style="display:none">
+<label>Nota do PIM</label><input id="pim" type="number" min="0" max="10" step="0.1">
 </div>
-    <div id="resultado" class="resultado" style="display:none;"></div>
-
-  </div>
-
-  <footer>
-    Created by R F NASCIMENTO
-  </footer>
-
-  <script>
-
-    document.getElementById('curso').addEventListener('change', function () {
-
-      const campoPIM = document.getElementById('campoPIM');
-
-      if (this.value === 'gestao') {
-        campoPIM.style.display = 'block';
-      } else {
-        campoPIM.style.display = 'none';
-      }
-
-    });
-
-    function calcular() {
-
-      const prova = parseFloat(document.getElementById('prova').value);
-      const questionario = parseFloat(document.getElementById('questionario').value);
-      const curriculo = document.getElementById('curriculo').value;
-      const bimestre = document.getElementById('bimestre').value;
-      const curso = document.getElementById('curso').value;
-      const resultadoDiv = document.getElementById('resultado');
-
-      let pim = 0;
-
-      if (curso === 'gestao') {
-        pim = parseFloat(document.getElementById('pim').value);
-
-        if (isNaN(pim)) {
-          alert('Preencha a nota do PIM');
-          return;
-        }
-      }
-
-      if (isNaN(prova) || isNaN(questionario)) {
-        alert('Preencha todas as notas');
-        return;
-      }
-
-      let media = 0;
-
-      // Fórmula Gestão
-      if (curso === 'gestao') {
-
-        media = ((7 * prova) + (2 * pim) + questionario) / 10;
-
-      } else {
-
-        // Fórmula Normal
-        media = ((9 * prova) + questionario) / 10;
-
-      }
-
-      let mediaMinima = 0;
-
-      if (curriculo === '2022') {
-        mediaMinima = 5.8;
-      } else {
-        mediaMinima = 6.8;
-      }
-
-      let status = '';
-      let cor = '';
-
-      if (media >= mediaMinima) {
-
-        status = '✅ APROVADO';
-        cor = '#28a745';
-
-      } else {
-
-        if (bimestre === '1') {
-
-          status = '🟡 RECUPERAÇÃO';
-          cor = '#ffc107';
-
-        } else {
-
-          status = '❌ REPROVADO';
-          cor = '#dc3545';
-
-        }
-
-      }
-
-      resultadoDiv.style.display = 'block';
-
-      resultadoDiv.style.background = cor;
-
-      resultadoDiv.innerHTML = `
-        Média Final: ${media.toFixed(2)} <br><br>
-        ${status}
-      `;
-
-    }
-let mediaCalculada = 0;
-
-function calcularExame(){
-
-    const exame = parseFloat(document.getElementById("exame").value);
-
-    if(isNaN(exame)){
-        alert("Informe a nota do exame.");
-        return;
-    }
-
-    const mediaFinal = (mediaCalculada + exame) / 2;
-
-    const resultado = document.getElementById("resultado");
-
-    if(mediaFinal >= 5){
-
-        resultado.style.background="#28a745";
-
-        resultado.innerHTML=`
-            Média Inicial: ${mediaCalculada.toFixed(2)}<br>
-            Nota do Exame: ${exame.toFixed(2)}<br><br>
-
-            Média Final: <strong>${mediaFinal.toFixed(2)}</strong><br><br>
-
-            ✅ APROVADO APÓS EXAME
-        `;
-
-    }else{
-
-        resultado.style.background="#dc3545";
-
-        resultado.innerHTML=`
-            Média Inicial: ${mediaCalculada.toFixed(2)}<br>
-            Nota do Exame: ${exame.toFixed(2)}<br><br>
-
-            Média Final: <strong>${mediaFinal.toFixed(2)}</strong><br><br>
-
-            ❌ REPROVADO APÓS EXAME
-        `;
-
-    }
-
+<label>Nota da Prova</label><input id="prova" type="number" min="0" max="10" step="0.1">
+<label>Nota do Questionário</label><input id="questionario" type="number" min="0" max="10" step="0.1">
+<label>Currículo</label>
+<select id="curriculo"><option value="2022">Até 2022</option><option value="2023">2023+</option></select>
+<button onclick="calc()">Calcular</button>
+<div id="exameBox" style="display:none">
+<label>Nota do Exame</label><input id="exame" type="number" min="0" max="10" step="0.1">
+<button onclick="calcExame()">Calcular Exame</button>
+</div>
+<div id="resultado"></div>
+</div>
+<footer>Created by R F NASCIMENTO</footer>
+<script>
+let media=0;
+function calc(){
+ let p=+prova.value,q=+questionario.value;
+ if(isNaN(p)||isNaN(q)){alert('Preencha as notas');return;}
+ media=(curso.value==='gestao')?((7*p)+(2*(+pim.value||0))+q)/10:((9*p)+q)/10;
+ let min=curriculo.value==='2022'?5.8:6.8;
+ resultado.style.display='block';
+ if(media>=min){
+  exameBox.style.display='none';
+  resultado.style.background='#28a745';
+  resultado.innerHTML='Média: '+media.toFixed(2)+'<br>✅ APROVADO';
+ }else{
+  exameBox.style.display='block';
+  resultado.style.background='#ff9800';
+  resultado.innerHTML='Média: '+media.toFixed(2)+'<br>📝 EM EXAME';
+ }
 }
-  </script>
-
-</body>
-</html>
+function calcExame(){
+ let e=+exame.value;
+ if(isNaN(e)){alert('Informe a nota do exame');return;}
+ let mf=(media+e)/2;
+ resultado.style.background=mf>=5?'#28a745':'#dc3545';
+ resultado.innerHTML='Média Inicial: '+media.toFixed(2)+'<br>Exame: '+e.toFixed(2)+'<br>Média Final: '+mf.toFixed(2)+'<br>'+(mf>=5?'✅ APROVADO APÓS EXAME':'❌ REPROVADO APÓS EXAME');
+}
+</script>
+</body></html>
