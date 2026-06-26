@@ -167,7 +167,22 @@
     <button onclick="calcular()">
       Calcular
     </button>
+<div id="campoExame" style="display:none; margin-top:20px;">
 
+    <label>Nota do Exame (Recuperação):</label>
+
+    <input
+        type="number"
+        id="exame"
+        min="0"
+        max="10"
+        step="0.1">
+
+    <button onclick="calcularExame()" style="margin-top:15px;background:#ff9800;">
+        Calcular Exame
+    </button>
+
+</div>
     <div id="resultado" class="resultado" style="display:none;"></div>
 
   </div>
@@ -271,7 +286,50 @@
       `;
 
     }
+let mediaCalculada = 0;
 
+function calcularExame(){
+
+    const exame = parseFloat(document.getElementById("exame").value);
+
+    if(isNaN(exame)){
+        alert("Informe a nota do exame.");
+        return;
+    }
+
+    const mediaFinal = (mediaCalculada + exame) / 2;
+
+    const resultado = document.getElementById("resultado");
+
+    if(mediaFinal >= 5){
+
+        resultado.style.background="#28a745";
+
+        resultado.innerHTML=`
+            Média Inicial: ${mediaCalculada.toFixed(2)}<br>
+            Nota do Exame: ${exame.toFixed(2)}<br><br>
+
+            Média Final: <strong>${mediaFinal.toFixed(2)}</strong><br><br>
+
+            ✅ APROVADO APÓS EXAME
+        `;
+
+    }else{
+
+        resultado.style.background="#dc3545";
+
+        resultado.innerHTML=`
+            Média Inicial: ${mediaCalculada.toFixed(2)}<br>
+            Nota do Exame: ${exame.toFixed(2)}<br><br>
+
+            Média Final: <strong>${mediaFinal.toFixed(2)}</strong><br><br>
+
+            ❌ REPROVADO APÓS EXAME
+        `;
+
+    }
+
+}
   </script>
 
 </body>
